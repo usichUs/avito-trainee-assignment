@@ -4,10 +4,10 @@ import { formatRelativeDate } from "../../../shared/utils";
 import { priorityColors, statusColors, statusLabels } from "./config";
 import styles from "./styles.module.css";
 
-interface AdCardProps {
+type AdCardProps = {
   ad: Advertisement;
   onClick?: () => void;
-}
+};
 
 export default function AdCard({ ad, onClick }: AdCardProps) {
   return (
@@ -21,7 +21,7 @@ export default function AdCard({ ad, onClick }: AdCardProps) {
         w={150}
         h={150}
         fit="cover"
-        src={ad.Images?.[0] || "https://placehold.co/400x400"}
+        src={ad.images?.[0] || "https://placehold.co/400x400"}
         alt={ad.title}
         radius="md"
       />

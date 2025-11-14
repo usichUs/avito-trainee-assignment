@@ -1,9 +1,7 @@
 import { apiClient } from "../../../shared/api";
 import type { PaginatedResponse } from "../../../shared/types/pagination";
+import type { SortBy, SortOrder } from "../../../shared/types/sort";
 import type { AdStatus } from "../types";
-
-export type SortBy = "createdAt" | "price" | "priority";
-export type SortOrder = "asc" | "desc";
 
 export type GetAllAdsParams = {
   page?: number;

@@ -1,1 +1,6 @@
-export { formatDate, formatDateTime, formatRelativeDate } from './formatDate'
+export {
+  formatDate,
+  formatDateTime,
+  formatRelativeDate,
+  formatTimeOnSite,
+} from "./formatDate";

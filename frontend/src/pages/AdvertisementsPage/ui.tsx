@@ -8,15 +8,12 @@ import {
   Group,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import { useAdvertisements } from "../entities/advertisement";
-import { AdList } from "../entities/advertisement/ui/AdList";
+import { useAdvertisements } from "../../entities/advertisement";
+import { AdList } from "../../entities/advertisement/ui/AdList";
 import { useState } from "react";
-import type { AdStatus } from "../entities/advertisement";
-import type {
-  SortBy,
-  SortOrder,
-} from "../entities/advertisement/api/getAllAds";
-import { AdFilters } from "../features/ads-filters/ui";
+import type { AdStatus } from "../../entities/advertisement";
+import { AdFilters } from "../../features/ads-filters/ui";
+import type { SortBy, SortOrder } from "../../shared/types/sort";
 
 export function AdvertisementsPage() {
   const navigate = useNavigate();
@@ -44,7 +41,7 @@ export function AdvertisementsPage() {
   });
 
   const handleAdClick = (id: number) => {
-    navigate(`/ads/${id}`);
+    navigate(`/item/${id}`);
   };
 
   const handlePageChange = (newPage: number) => {

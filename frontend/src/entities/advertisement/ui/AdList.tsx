@@ -2,12 +2,12 @@ import { Stack, Loader, Text } from "@mantine/core";
 import type { Advertisement } from "../types";
 import AdCard from "./AdCard";
 
-interface AdListProps {
+type AdListProps = {
   ads: Advertisement[];
   isLoading?: boolean;
   error?: Error | null;
   onAdClick?: (id: number) => void;
-}
+};
 
 export function AdList({ ads, isLoading, error, onAdClick }: AdListProps) {
   if (isLoading) {

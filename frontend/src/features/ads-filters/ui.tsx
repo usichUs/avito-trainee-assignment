@@ -12,7 +12,7 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import type { AdStatus } from "../../entities/advertisement";
 import { statusOptions, categoryOptions, sortOptions } from "./config";
 
-interface AdFiltersProps {
+type AdFiltersProps = {
   search: string;
   status: AdStatus[];
   category: string;
@@ -26,7 +26,7 @@ interface AdFiltersProps {
   onMaxPriceChange: (value: number | null) => void;
   onSortChange: (value: string) => void;
   onReset: () => void;
-}
+};
 
 export function AdFilters({
   search,
