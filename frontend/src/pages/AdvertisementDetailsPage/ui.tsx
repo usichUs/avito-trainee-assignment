@@ -26,6 +26,7 @@ import {
 } from "../../entities/advertisement/ui/config";
 import { ModerationHistoryList } from "../../entities/moderationHistory/ui/ModerationHistoryList";
 import { Carousel } from "@mantine/carousel";
+import { ModerationPanel } from "../../features/moderation-panel/ui";
 
 export function AdvertisementDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -98,6 +99,8 @@ export function AdvertisementDetailsPage() {
           </Group>
         </Group>
 
+        <ModerationPanel adId={ad.id} />
+
         <Group align="flex-start" gap="md">
           <Box style={{ flex: "1 1 45%", minWidth: "300px" }}>
             <Carousel withIndicators>
@@ -115,7 +118,7 @@ export function AdvertisementDetailsPage() {
             </Carousel>
           </Box>
 
-          <Box style={{ flex: "1 1 45%", minWidth: "300px", height: "400px" }}>
+          <Box style={{ flex: "1 1 45%", minWidth: "300px" }}>
             <ModerationHistoryList modHistory={ad.moderationHistory} />
           </Box>
         </Group>

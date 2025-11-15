@@ -14,6 +14,7 @@ import { useState } from "react";
 import type { AdStatus } from "../../entities/advertisement";
 import { AdFilters } from "../../features/ads-filters/ui";
 import type { SortBy, SortOrder } from "../../shared/types/sort";
+import { useDebouncedValue } from "@mantine/hooks";
 
 export function AdvertisementsPage() {
   const navigate = useNavigate();
@@ -25,13 +26,14 @@ export function AdvertisementsPage() {
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [sort, setSort] = useState("createdAt-desc");
   const limit = 10;
+  const [debounced] = useDebouncedValue(search, 300);
 
   const [sortBy, sortOrder] = sort.split("-") as [SortBy, SortOrder];
 
   const { data, isLoading, error } = useAdvertisements({
     page,
     limit,
-    search: search || undefined,
+    search: debounced || undefined,
     status: status.length > 0 ? status : undefined,
     categoryId: category ? Number(category) : undefined,
     minPrice: minPrice ?? undefined,
