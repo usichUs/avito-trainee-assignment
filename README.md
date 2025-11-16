@@ -338,6 +338,7 @@ npm run lint
 
 ```bash
 npm install --legacy-peer-deps
+```
 ````
 
 ### Проблема: Docker контейнеры не запускаются
