@@ -182,6 +182,37 @@ export const apiClient = axios.create({
 });
 ```
 
+### Отмена запросов (Request Cancellation)
+
+Все API функции поддерживают отмену запросов через `AbortSignal`:
+
+```typescript
+// entities/advertisement/api/getAllAds.ts
+export async function getAllAds(
+  params?: GetAllAdsParams,
+  signal?: AbortSignal // Поддержка отмены
+): Promise<GetAdvertisementsResponse> {
+  const response = await apiClient.get<GetAdvertisementsResponse>("/ads", {
+    params,
+    signal,
+  });
+  return response.data;
+}
+```
+
+TanStack Query автоматически отменяет запросы при размонтировании компонента:
+
+```typescript
+// entities/advertisement/model/useAdvertisements.ts
+export function useAdvertisements(params?: GetAllAdsParams) {
+  return useQuery({
+    queryKey: ["advertisements", params],
+    queryFn: ({ signal }) => getAllAds(params, signal),
+    staleTime: 1000 * 60 * 5,
+  });
+}
+```
+
 ### Endpoints
 
 - `GET /ads` - Список объявлений

@@ -15,7 +15,13 @@ export type GetAllAdsParams = {
   sortOrder?: SortOrder;
 };
 
-export async function getAllAds(params?: GetAllAdsParams) {
-  const response = await apiClient.get<PaginatedResponse>("/ads", { params });
+export async function getAllAds(
+  params?: GetAllAdsParams,
+  signal?: AbortSignal
+) {
+  const response = await apiClient.get<PaginatedResponse>("/ads", {
+    params,
+    signal,
+  });
   return response.data;
 }

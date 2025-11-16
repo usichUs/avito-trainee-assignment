@@ -10,7 +10,7 @@ import type { StatsFilters } from "../types";
 export function useStatsSummary(filters?: StatsFilters) {
   return useQuery({
     queryKey: ["stats", "summary", filters],
-    queryFn: () => getStatsSummary(filters),
+    queryFn: ({ signal }) => getStatsSummary(filters, signal),
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -18,7 +18,7 @@ export function useStatsSummary(filters?: StatsFilters) {
 export function useActivityChart(filters?: StatsFilters) {
   return useQuery({
     queryKey: ["stats", "activity", filters],
-    queryFn: () => getActivityChart(filters),
+    queryFn: ({ signal }) => getActivityChart(filters, signal),
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -26,7 +26,7 @@ export function useActivityChart(filters?: StatsFilters) {
 export function useDecisionsChart(filters?: StatsFilters) {
   return useQuery({
     queryKey: ["stats", "decisions", filters],
-    queryFn: () => getDecisionsChart(filters),
+    queryFn: ({ signal }) => getDecisionsChart(filters, signal),
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -34,7 +34,7 @@ export function useDecisionsChart(filters?: StatsFilters) {
 export function useCategoriesChart(filters?: StatsFilters) {
   return useQuery({
     queryKey: ["stats", "categories", filters],
-    queryFn: () => getCategoriesChart(filters),
+    queryFn: ({ signal }) => getCategoriesChart(filters, signal),
     staleTime: 5 * 60 * 1000,
   });
 }
