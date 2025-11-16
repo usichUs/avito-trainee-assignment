@@ -330,8 +330,6 @@ npm run lint
 
 ## Troubleshooting
 
-````
-
 ### Проблема: Не устанавливаются зависимости
 
 **Решение:** Используйте флаг `--legacy-peer-deps`:
@@ -339,7 +337,6 @@ npm run lint
 ```bash
 npm install --legacy-peer-deps
 ```
-````
 
 ### Проблема: Docker контейнеры не запускаются
 
