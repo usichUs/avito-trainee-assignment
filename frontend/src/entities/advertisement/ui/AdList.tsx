@@ -1,15 +1,14 @@
-import { Stack, Loader, Text } from "@mantine/core";
-import type { Advertisement } from "../types";
-import AdCard from "./AdCard";
+import { Stack, Loader, Text } from '@mantine/core';
+import type { Advertisement } from '../types';
+import AdCard from './AdCard';
 
 type AdListProps = {
   ads: Advertisement[];
   isLoading?: boolean;
   error?: Error | null;
-  onAdClick?: (id: number) => void;
 };
 
-export function AdList({ ads, isLoading, error, onAdClick }: AdListProps) {
+export function AdList({ ads, isLoading, error }: AdListProps) {
   if (isLoading) {
     return (
       <Stack align="center" py="xl">
@@ -43,7 +42,7 @@ export function AdList({ ads, isLoading, error, onAdClick }: AdListProps) {
   return (
     <Stack gap="md">
       {ads.map((ad) => (
-        <AdCard key={ad.id} ad={ad} onClick={() => onAdClick?.(ad.id)} />
+        <AdCard key={ad.id} ad={ad} />
       ))}
     </Stack>
   );

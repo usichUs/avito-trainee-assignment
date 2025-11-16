@@ -6,89 +6,47 @@ import {
   Text,
   Paper,
   Group,
-} from "@mantine/core";
-import { useNavigate } from "react-router-dom";
-import { useAdvertisements } from "../../entities/advertisement";
-import { AdList } from "../../entities/advertisement/ui/AdList";
-import { useState } from "react";
-import type { AdStatus } from "../../entities/advertisement";
-import { AdFilters } from "../../features/ads-filters/ui";
-import type { SortBy, SortOrder } from "../../shared/types/sort";
-import { useDebouncedValue } from "@mantine/hooks";
+} from '@mantine/core';
+import { useState } from 'react';
+import { useAdvertisements } from '../../entities/advertisement';
+import { AdList } from '../../entities/advertisement/ui/AdList';
+import type { SortBy, SortOrder } from '../../shared/types/sort';
+import { useSearch } from '../../features/search';
+import { useSort } from '../../features/sort';
+import { useFilters } from '../../features/filter';
+import { AdsFilterPanel } from '../../widgets/AdsFilterPanel';
+
+const LIMIT_POSTS_PER_PAGE = 10;
 
 export function AdvertisementsPage() {
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<AdStatus[]>([]);
-  const [category, setCategory] = useState("");
-  const [minPrice, setMinPrice] = useState<number | null>(null);
-  const [maxPrice, setMaxPrice] = useState<number | null>(null);
-  const [sort, setSort] = useState("createdAt-desc");
-  const limit = 10;
-  const [debounced] = useDebouncedValue(search, 300);
 
-  const [sortBy, sortOrder] = sort.split("-") as [SortBy, SortOrder];
+  const searchModel = useSearch();
+  const sortModel = useSort();
+  const filtersModel = useFilters();
+
+  const [sortBy, sortOrder] = sortModel.value.split('-') as [SortBy, SortOrder];
 
   const { data, isLoading, error } = useAdvertisements({
     page,
-    limit,
-    search: debounced || undefined,
-    status: status.length > 0 ? status : undefined,
-    categoryId: category ? Number(category) : undefined,
-    minPrice: minPrice ?? undefined,
-    maxPrice: maxPrice ?? undefined,
+    limit: LIMIT_POSTS_PER_PAGE,
+    search: searchModel.debouncedValue || undefined,
+    status:
+      filtersModel.filters.status.length > 0
+        ? filtersModel.filters.status
+        : undefined,
+    categoryId: filtersModel.filters.categoryId
+      ? Number(filtersModel.filters.categoryId)
+      : undefined,
+    minPrice: filtersModel.filters.priceFrom ?? undefined,
+    maxPrice: filtersModel.filters.priceTo ?? undefined,
     sortBy,
     sortOrder,
   });
 
-  const handleAdClick = (id: number) => {
-    navigate(`/item/${id}`);
-  };
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleSearchChange = (value: string) => {
-    setSearch(value);
-    setPage(1);
-  };
-
-  const handleStatusChange = (value: AdStatus[]) => {
-    setStatus(value);
-    setPage(1);
-  };
-
-  const handleCategoryChange = (value: string) => {
-    setCategory(value);
-    setPage(1);
-  };
-
-  const handleMinPriceChange = (value: number | null) => {
-    setMinPrice(value);
-    setPage(1);
-  };
-
-  const handleMaxPriceChange = (value: number | null) => {
-    setMaxPrice(value);
-    setPage(1);
-  };
-
-  const handleSortChange = (value: string) => {
-    setSort(value);
-    setPage(1);
-  };
-
-  const handleReset = () => {
-    setSearch("");
-    setStatus([]);
-    setCategory("");
-    setMinPrice(null);
-    setMaxPrice(null);
-    setSort("createdAt-desc");
-    setPage(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -103,28 +61,14 @@ export function AdvertisementsPage() {
           )}
         </Group>
 
-        <AdFilters
-          search={search}
-          status={status}
-          category={category}
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-          sort={sort}
-          onSearchChange={handleSearchChange}
-          onStatusChange={handleStatusChange}
-          onCategoryChange={handleCategoryChange}
-          onMinPriceChange={handleMinPriceChange}
-          onMaxPriceChange={handleMaxPriceChange}
-          onSortChange={handleSortChange}
-          onReset={handleReset}
+        <AdsFilterPanel
+          searchModel={searchModel}
+          sortModel={sortModel}
+          filtersModel={filtersModel}
+          onFilterChange={() => setPage(1)}
         />
 
-        <AdList
-          ads={data?.ads || []}
-          isLoading={isLoading}
-          error={error}
-          onAdClick={handleAdClick}
-        />
+        <AdList ads={data?.ads || []} isLoading={isLoading} error={error} />
 
         {data?.pagination && data.pagination.totalPages > 1 && (
           <Paper p="md" radius="md" withBorder>

@@ -14,6 +14,7 @@ export function Header() {
             variant={location.pathname === "/list" ? "filled" : "light"}
             leftSection={<IconList size={16} />}
             onClick={() => navigate("/list")}
+            component="a"
           >
             Список объявлений
           </Button>
@@ -21,6 +22,7 @@ export function Header() {
             variant={location.pathname === "/stats" ? "filled" : "light"}
             leftSection={<IconChartBar size={16} />}
             onClick={() => navigate("/stats")}
+            component="a"
           >
             Статистика
           </Button>

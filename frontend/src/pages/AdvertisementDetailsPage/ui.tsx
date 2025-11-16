@@ -52,21 +52,17 @@ export function AdvertisementDetailsPage() {
           <Text c="red" size="lg">
             Объявление не найдено
           </Text>
-          <Button variant="light" onClick={() => navigate("/list")}>
+          <Button
+            variant="light"
+            onClick={() => navigate("/list")}
+            component="a"
+          >
             Вернуться к списку
           </Button>
         </Stack>
       </Container>
     );
   }
-
-  const handlePrevious = () => {
-    navigate(`/item/${currentId - 1}`);
-  };
-
-  const handleNext = () => {
-    navigate(`/item/${currentId + 1}`);
-  };
 
   return (
     <Container size="xl" py="xl">
@@ -76,6 +72,7 @@ export function AdvertisementDetailsPage() {
             variant="subtle"
             leftSection={<IconArrowLeft size={16} />}
             onClick={() => navigate("/list/")}
+            component="a"
           >
             Назад
           </Button>
@@ -84,15 +81,17 @@ export function AdvertisementDetailsPage() {
             <Button
               variant="default"
               leftSection={<IconChevronLeft size={16} />}
-              onClick={handlePrevious}
               disabled={currentId <= 1}
+              component="a"
+              href={`/item/${currentId - 1}`}
             >
               Предыдущее
             </Button>
             <Button
               variant="default"
               rightSection={<IconChevronRight size={16} />}
-              onClick={handleNext}
+              component="a"
+              href={`/item/${currentId + 1}`}
             >
               Следующее
             </Button>

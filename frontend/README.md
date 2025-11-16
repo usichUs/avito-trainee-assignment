@@ -1,75 +1,226 @@
-# React + TypeScript + Vite
+# Frontend - Модерация объявлений
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React приложение для модерации объявлений с функциями фильтрации, поиска и статистики.
 
-Currently, two official plugins are available:
+## 🚀 Технологии
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 18** + **TypeScript** + **Vite**
+- **Mantine UI v8** - компонентная библиотека
+- **TanStack Query v5** - управление серверным состоянием
+- **React Router v6** - маршрутизация
+- **Axios** - HTTP клиент
+- **Mantine Charts** - графики и диаграммы
 
-## React Compiler
+## 📋 Требования
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Node.js >= 20.x
+- npm >= 10.x
 
-Note: This will impact Vite dev & build performances.
+## 🎯 Быстрый старт
 
-## Expanding the ESLint configuration
+```bash
+# Установка зависимостей
+npm install --legacy-peer-deps
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Запуск dev сервера
+npm run dev
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Приложение будет доступно на http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Доступные команды
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev          # Запуск development сервера
+npm run build        # Production сборка
+npm run preview      # Просмотр production сборки
+npm run lint         # Проверка кода ESLint
 ```
+
+## 🔧 Конфигурация
+
+### Переменные окружения
+
+Создайте файл `.env` в корне проекта:
+
+```env
+VITE_API_URL=http://localhost:3001/api/v1
+```
+
+## 🏗️ Архитектура
+
+Проект построен по методологии **Feature-Sliced Design (FSD)**:
+
+```
+src/
+├── app/                # Инициализация приложения
+│   ├── App.tsx        # Корневой компонент с роутингом
+│   └── QueryProvider.tsx  # Провайдер TanStack Query
+│
+├── pages/             # Страницы
+│   ├── AdvertisementsPage/       # Список объявлений
+│   ├── AdvertisementDetailsPage/ # Детали объявления
+│   └── StatisticsPage/           # Статистика
+│
+├── widgets/           # Композитные компоненты
+│   ├── Header/                   # Навигация
+│   └── AdsFilterPanel/           # Панель фильтров
+│
+├── features/          # Функциональные возможности
+│   ├── search/        # Поиск объявлений
+│   ├── sort/          # Сортировка
+│   ├── filter/        # Фильтрация
+│   └── moderation-panel/  # Модерация
+│
+├── entities/          # Бизнес-сущности
+│   ├── advertisement/ # Объявления (API, хуки, типы, UI)
+│   └── stats/        # Статистика
+│
+└── shared/           # Переиспользуемый код
+    ├── api/          # HTTP клиент (Axios)
+    ├── types/        # Общие типы
+    └── utils/        # Утилиты
+```
+
+## 📱 Основные возможности
+
+### 1. Список объявлений (`/list`)
+
+- Карточки с основной информацией
+- Поиск по названию и описанию (с debounce)
+- Фильтры: статус, категория, диапазон цен
+- Сортировка: по дате, цене, приоритету
+- Пагинация
+
+### 2. Детали объявления (`/item/:id`)
+
+- Полная информация
+- Галерея изображений (карусель)
+- Панель модерации с причинами отклонения
+
+### 3. Статистика (`/stats`)
+
+- Карточки с метриками
+- Столбчатая диаграмма активности
+- Круговая диаграмма решений
+- Статистика по категориям
+- Фильтр по периодам
+
+## 🎨 Ключевые концепции
+
+### State Management
+
+**Серверное состояние** - TanStack Query:
+
+```typescript
+const { data, isLoading } = useAdvertisements({
+  page: 1,
+  limit: 10,
+  status: ["pending"],
+});
+```
+
+**Локальное состояние** - Custom hooks:
+
+```typescript
+const searchModel = useSearch(); // Поиск
+const sortModel = useSort(); // Сортировка
+const filtersModel = useFilters(); // Фильтры
+```
+
+### Type Safety
+
+Полная типизация TypeScript:
+
+```typescript
+// Строгие union типы
+type AdStatus = 'pending' | 'approved' | 'rejected' | 'needsWork';
+
+// Generic функции
+const updateFilter = <K extends keyof AdFiltersState>(
+  key: K,
+  value: AdFiltersState[K]
+) => {...}
+```
+
+### API Layer
+
+Запросы инкапсулированы в `entities/*/api`:
+
+```typescript
+// entities/advertisement/api/getAdvertisements.ts
+export async function getAdvertisements(params: GetAdvertisementsParams) {
+  const response = await apiClient.get<Response>("/ads", { params });
+  return response.data;
+}
+```
+
+Хуки для работы с API в `entities/*/model`:
+
+```typescript
+// entities/advertisement/model/useAdvertisements.ts
+export function useAdvertisements(params: GetAdvertisementsParams) {
+  return useQuery({
+    queryKey: ["advertisements", params],
+    queryFn: () => getAdvertisements(params),
+  });
+}
+```
+
+## 🔌 API Интеграция
+
+### Базовый URL
+
+```typescript
+// shared/api/client.ts
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
+
+export const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+});
+```
+
+### Endpoints
+
+- `GET /ads` - Список объявлений
+- `GET /ads/:id` - Детали объявления
+- `POST /ads/:id/moderate` - Модерация
+- `GET /stats/*` - Статистика
+
+## 🎯 Оптимизации
+
+- **Debounce** для поиска (300ms)
+- **useMemo** для вычисляемых значений
+- **React.lazy** для code splitting (опционально)
+- **Кэширование** TanStack Query (5 минут)
+- **Оптимистичные обновления** при модерации
+
+## 🐛 Troubleshooting
+
+### Ошибка установки зависимостей
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### CORS ошибки
+
+Проверьте, что бэкенд запущен и настроен на порту 3001
+
+### 404 на API запросы
+
+Убедитесь, что `VITE_API_URL` указывает на правильный адрес с префиксом `/api/v1`
+
+## 📚 Документация
+
+- [Mantine UI](https://mantine.dev/)
+- [TanStack Query](https://tanstack.com/query)
+- [React Router](https://reactrouter.com/)
+- [Feature-Sliced Design](https://feature-sliced.design/)
+
+---
+
+**Автор:** Никита Усачев  
+**Тестовое задание:** Авито Стажировка
